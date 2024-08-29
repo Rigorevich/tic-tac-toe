@@ -1,11 +1,20 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+
+import { getFilledBoard } from '../utils/board';
 
 export type SquareType = 'cross' | 'zero' | null;
 
-const getFilledBoard = (): SquareType[] => Array(9).fill(null);
-
 export const usePlayGame = () => {
   const [board, setBoard] = useState(() => getFilledBoard());
+  const [order, setOrder] = useState<SquareType>('cross');
 
-  return { board, setBoard };
+  const handleClickSquare = useCallback(
+    (key: string) => {
+      setBoard((prev) => ({ ...prev, [key]: order }));
+      setOrder((prev) => (prev === 'cross' ? 'zero' : 'cross'));
+    },
+    [order]
+  );
+
+  return { board, setBoard, handleClickSquare };
 };

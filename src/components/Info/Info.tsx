@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import styles from './Info.module.scss';
 
-export const Info: FC = () => {
+export const Info: FC = memo(() => {
   return (
     <div className={styles.info}>
       <div className={styles.section}>
@@ -15,4 +15,4 @@ export const Info: FC = () => {
       </div>
     </div>
   );
-};
+});

@@ -5,10 +5,45 @@
   cursor: pointer;
   background-color: #fff;
   border: 5px solid black;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.3s ease;
 
   &:hover {
     background-color: #f0f0f0;
     border-color: #666;
+  }
+}
+
+.cross {
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 10%;
+    background-color: black;
+    border-radius: 2px;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+
+.zero {
+  &::before {
+    content: '';
+    position: absolute;
+    width: 55%;
+    height: 55%;
+    border: 15px solid black;
+    border-radius: 50%;
   }
 }

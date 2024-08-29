@@ -7,14 +7,19 @@ import { SquareType } from '../../hooks/usePlayGame';
 import styles from './Board.module.scss';
 
 export interface BoardProps {
-  board: SquareType[];
+  board: Record<string, SquareType>;
+  handleClickSquare: (key: string) => void;
 }
 
-export const Board: FC<BoardProps> = ({ board }) => {
+export const Board: FC<BoardProps> = ({ board, handleClickSquare }) => {
   return (
     <div className={styles.board}>
-      {board.map((_, index) => (
-        <Square key={index} />
+      {Object.keys(board).map((key) => (
+        <Square
+          key={key}
+          value={board[key]}
+          onClick={() => handleClickSquare(key)}
+        />
       ))}
     </div>
   );
