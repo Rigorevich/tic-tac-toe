@@ -16,5 +16,5 @@ export const usePlayGame = () => {
     [order]
   );
 
-  return { board, setBoard, handleClickSquare };
+  return { board, order, handleClickSquare };
 };

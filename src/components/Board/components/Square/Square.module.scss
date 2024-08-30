@@ -4,17 +4,11 @@
   height: 100%;
   cursor: pointer;
   background-color: #fff;
-  border: 5px solid black;
+  border: 5px solid #252525;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #f0f0f0;
-    border-color: #666;
-  }
 }
 
 .cross {
@@ -24,7 +18,7 @@
     position: absolute;
     width: 80%;
     height: 10%;
-    background-color: black;
+    background-color: #252525;
     border-radius: 2px;
   }
 
@@ -43,7 +37,20 @@
     position: absolute;
     width: 55%;
     height: 55%;
-    border: 15px solid black;
+    border: 15px solid #252525;
     border-radius: 50%;
+    animation: drawPointer 0.2s ease forwards;
+  }
+}
+
+@keyframes drawPointer {
+  0% {
+    transform: scale(0.8);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
   }
 }

@@ -5,7 +5,7 @@ import { usePlayGame } from '../hooks/usePlayGame';
 import styles from './Game.module.scss';
 
 export const Game = () => {
-  const { board, handleClickSquare } = usePlayGame();
+  const { board, order, handleClickSquare } = usePlayGame();
 
   return (
     <div className={styles.wrapper}>
@@ -13,7 +13,7 @@ export const Game = () => {
         board={board}
         handleClickSquare={handleClickSquare}
       />
-      <Info />
+      <Info order={order} />
     </div>
   );
 };

@@ -8,13 +8,17 @@
         align-items: center;
         gap: 8px;
 
+        &.active {
+            color: #FF0000;
+        }
+
         .player {
-            font-weight: 500;
+            font-weight: 600;
             font-size: 24px;
         }
 
         .score {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 32px;
         }
     }
