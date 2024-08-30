@@ -1,8 +1,10 @@
 import { BOARD_SIZE } from '../constants/board';
 import { SquareType } from '../hooks/usePlayGame';
 
+export type Board = Record<string, SquareType>;
+
 export const getFilledBoard = () => {
-  const board: Record<string, SquareType> = {};
+  const board: Board = {};
 
   for (let key = 0; key < BOARD_SIZE; key++) {
     board[key] = null;

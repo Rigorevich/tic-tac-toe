@@ -2,13 +2,13 @@ import classNames from 'classnames';
 import { FC, memo, useEffect, useState } from 'react';
 
 import { type SquareType } from '../../hooks/usePlayGame';
-import { type WinnerInfo } from '../../utils/game';
+import { type GameResult } from '../../utils/game';
 
 import styles from './Info.module.scss';
 
 interface InfoProps {
   order: SquareType;
-  winner?: WinnerInfo['winner'];
+  winner?: GameResult['winner'];
 }
 
 type ScoreType = Record<'cross' | 'zero', number>;

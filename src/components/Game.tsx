@@ -5,18 +5,18 @@ import { usePlayGame } from '../hooks/usePlayGame';
 import styles from './Game.module.scss';
 
 export const Game = () => {
-  const { board, order, winnerInfo, handleClickSquare } = usePlayGame();
+  const { board, order, gameResult, handleClickSquare } = usePlayGame();
 
   return (
     <div className={styles.wrapper}>
       <Board
         board={board}
         handleClickSquare={handleClickSquare}
-        winnerInfo={winnerInfo}
+        gameResult={gameResult}
       />
       <Info
         order={order}
-        winner={winnerInfo?.winner}
+        winner={gameResult?.winner}
       />
     </div>
   );

@@ -1,44 +1,48 @@
 import { useCallback, useState } from 'react';
 
-import { getFilledBoard } from '../utils/board';
-import { calculateWinner, type WinnerInfo } from '../utils/game';
+import { defaultBoard } from '../constants/board';
+import { type Board } from '../utils/board';
+import { calculateWinner, type GameResult } from '../utils/game';
 
 export type SquareType = 'cross' | 'zero' | null;
 
 export const usePlayGame = () => {
-  const [board, setBoard] = useState(() => getFilledBoard());
+  const [board, setBoard] = useState<Board>(defaultBoard);
+  const [history, setHistory] = useState<Board[]>([]);
   const [order, setOrder] = useState<SquareType>('cross');
-  const [winnerInfo, setWinnerInfo] = useState<WinnerInfo | null>(null);
+  const [gameResult, setGameResult] = useState<GameResult | null>(null);
 
   const resetGame = useCallback(() => {
-    setBoard(() => getFilledBoard());
-    setWinnerInfo(null);
+    setBoard(defaultBoard);
+    setHistory([]);
+    setGameResult(null);
     setOrder((prev) => (prev === 'cross' ? 'zero' : 'cross'));
   }, []);
 
   const handleClickSquare = useCallback(
     (key: string) => {
-      if (!winnerInfo && board[key]) {
+      if (!gameResult && board[key]) {
         return;
       }
 
-      if (winnerInfo) {
+      if (gameResult) {
         return resetGame();
       }
 
       const updatedBoard = { ...board, [key]: order };
-      const winningInfo = calculateWinner(updatedBoard);
+      const info = calculateWinner(updatedBoard);
 
-      if (winningInfo) {
-        setWinnerInfo(winningInfo);
+      if (info) {
+        setGameResult(info);
       } else {
         setOrder((prev) => (prev === 'cross' ? 'zero' : 'cross'));
       }
 
+      setHistory((prev) => [...prev, updatedBoard]);
       setBoard(updatedBoard);
     },
-    [board, winnerInfo, order, resetGame]
+    [board, gameResult, order, resetGame]
   );
 
-  return { board, order, winnerInfo, handleClickSquare };
+  return { board, order, history, gameResult, handleClickSquare };
 };

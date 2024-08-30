@@ -1,6 +1,6 @@
 import { SquareType } from '../hooks/usePlayGame';
 
-export interface WinnerInfo {
+export interface GameResult {
   winner: 'cross' | 'zero' | 'draw';
   winningCombination: [number, number, number] | null;
 }
@@ -8,7 +8,7 @@ export interface WinnerInfo {
 export const checkDraw = (board: Record<string, SquareType>): boolean =>
   Object.values(board).every(Boolean);
 
-export const calculateWinner = (board: Record<string, SquareType>): WinnerInfo | null => {
+export const calculateWinner = (board: Record<string, SquareType>): GameResult | null => {
   const winningCombinations = [
     [0, 1, 2],
     [3, 4, 5],
