@@ -4,22 +4,21 @@
 
     .section {
         display: flex;
+        gap: 8px;
         flex-direction: column;
         align-items: center;
-        gap: 8px;
+        font-weight: var(--font-weight-bold);
 
         &.active {
-            color: #FF0000;
+            color: var(--primary-color);
         }
 
         .player {
-            font-weight: 600;
-            font-size: 24px;
+            font-size: var(--font-size-xl);
         }
 
         .score {
-            font-weight: 700;
-            font-size: 32px;
+            font-size: var(--font-size-xxl);
         }
     }
 }
