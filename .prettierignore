@@ -3,4 +3,3 @@ dist
 eslint.config.js
 
 *.html
-*.scss

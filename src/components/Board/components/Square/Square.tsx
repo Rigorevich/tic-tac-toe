@@ -3,12 +3,12 @@ import { FC } from 'react';
 
 import { type SquareType } from '../../../../hooks/useTicTacToe';
 import { isWinnerSquare } from '../../../../utils/board';
-import { type GameResult } from '../../../../utils/game';
+import { type GameResultType } from '../../../../utils/game';
 
 import styles from './Square.module.scss';
 
 interface SquareProps {
-  winningCombinations?: GameResult['winningCombination'];
+  winningCombinations?: GameResultType['winningCombination'];
   boardKey: string;
   value: SquareType;
   handleClickSquare: VoidFunction;

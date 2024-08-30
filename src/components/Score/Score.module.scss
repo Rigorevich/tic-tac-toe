@@ -1,21 +1,21 @@
 .wrapper {
+  display: flex;
+  gap: 32px;
+
+  .section {
     display: flex;
-    gap: 32px;
+    gap: 8px;
+    flex-direction: column;
+    align-items: center;
+    color: var(--dark-color);
+    font-weight: var(--font-weight-bold);
 
-    .section {
-        display: flex;
-        gap: 8px;
-        flex-direction: column;
-        align-items: center;
-        color: var(--dark-color);
-        font-weight: var(--font-weight-bold);
-
-        .player {
-            font-size: var(--font-size-xl);
-        }
-
-        .score {
-            font-size: var(--font-size-xxl);
-        }
+    .player {
+      font-size: var(--font-size-xl);
     }
+
+    .score {
+      font-size: var(--font-size-xxl);
+    }
+  }
 }

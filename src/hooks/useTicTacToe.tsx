@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import { getFilledBoard, type BoardType } from '../utils/board';
-import { calculateWinner, getNextPlayer, type GameResult } from '../utils/game';
+import { calculateWinner, getNextPlayer, type GameResultType } from '../utils/game';
 
 export type PlayerType = 'cross' | 'zero';
 export type SquareType = 'cross' | 'zero' | null;
@@ -16,27 +16,36 @@ export const defaultBoard = getFilledBoard();
 export const useTicTacToe = () => {
   const [board, setBoard] = useState<BoardType>(defaultBoard);
   const [moves, setMoves] = useState<MoveType[]>([]);
-  const [player, setPlayer] = useState<PlayerType>('cross');
-  const [gameResult, setGameResult] = useState<GameResult | null>(null);
+  const [startingPlayer, setStartingPlayer] = useState<PlayerType>('cross');
+  const [gameResult, setGameResult] = useState<GameResultType | null>(null);
   const [score, setScore] = useState<ScoreType>({ cross: 0, zero: 0, tie: 0 });
 
-  const resetGame = useCallback(() => {
-    if (gameResult?.result) {
-      setScore((prev) => ({ ...prev, [gameResult.result]: prev[gameResult.result] + 1 }));
-    }
+  const currentPlayer = moves.length % 2 === 0 ? startingPlayer : getNextPlayer(startingPlayer);
 
+  const updateScore = useCallback(() => {
+    if (gameResult?.result) {
+      setScore((prevScore) => ({
+        ...prevScore,
+        [gameResult.result]: prevScore[gameResult.result] + 1,
+      }));
+    }
+  }, [gameResult]);
+
+  const resetGame = useCallback(() => {
+    updateScore();
+    setStartingPlayer((prev) => (prev === 'cross' ? 'zero' : 'cross'));
     setBoard(defaultBoard);
-    setPlayer(moves[0].player === 'cross' ? 'zero' : 'cross');
     setMoves([]);
     setGameResult(null);
-  }, [moves, gameResult]);
+  }, [updateScore]);
 
   const handleJumpToMove = useCallback(
     (index: number) => {
-      setBoard(moves[index].board);
-      setPlayer(getNextPlayer(moves[index].player));
-      setMoves(moves.slice(0, index + 1));
-      setGameResult(null);
+      if (index !== moves.length - 1) {
+        setBoard(moves[index].board);
+        setMoves(moves.slice(0, index + 1));
+        setGameResult(null);
+      }
     },
     [moves]
   );
@@ -48,20 +57,18 @@ export const useTicTacToe = () => {
         return;
       }
 
-      const updatedBoard = { ...board, [key]: player };
+      const updatedBoard = { ...board, [key]: currentPlayer };
       const info = calculateWinner(updatedBoard);
 
       if (info) {
         setGameResult(info);
-      } else {
-        setPlayer(getNextPlayer(player));
       }
 
-      setMoves((prev) => [...prev, { board: updatedBoard, player: player }]);
+      setMoves((prev) => [...prev, { board: updatedBoard, player: currentPlayer }]);
       setBoard(updatedBoard);
     },
-    [board, gameResult, player, resetGame]
+    [board, gameResult, currentPlayer, resetGame]
   );
 
-  return { board, player, moves, gameResult, score, handleClickSquare, handleJumpToMove };
+  return { board, currentPlayer, moves, gameResult, score, handleClickSquare, handleJumpToMove };
 };

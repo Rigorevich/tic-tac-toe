@@ -1,6 +1,6 @@
 import { type PlayerType, type SquareType } from '../hooks/useTicTacToe';
 
-export interface GameResult {
+export interface GameResultType {
   result: 'cross' | 'zero' | 'tie';
   winningCombination: [number, number, number] | null;
 }
@@ -8,7 +8,7 @@ export interface GameResult {
 export const checkTie = (board: Record<string, SquareType>): boolean =>
   Object.values(board).every(Boolean);
 
-export const calculateWinner = (board: Record<string, SquareType>): GameResult | null => {
+export const calculateWinner = (board: Record<string, SquareType>): GameResultType | null => {
   const winningCombinations = [
     [0, 1, 2],
     [3, 4, 5],

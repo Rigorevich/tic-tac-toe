@@ -3,13 +3,13 @@ import { FC } from 'react';
 import { Square } from './components/Square/Square';
 
 import { type SquareType } from '../../hooks/useTicTacToe';
-import { type GameResult } from '../../utils/game';
+import { type GameResultType } from '../../utils/game';
 
 import styles from './Board.module.scss';
 
 export interface BoardProps {
   board: Record<string, SquareType>;
-  gameResult: GameResult | null;
+  gameResult: GameResultType | null;
   handleClickSquare: (key: string) => void;
 }
 
