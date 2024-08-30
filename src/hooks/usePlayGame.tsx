@@ -1,15 +1,14 @@
 import { useCallback, useState } from 'react';
 
 import { getFilledBoard } from '../utils/board';
-import { calculateWinner, CalculateWinnerPayload } from '../utils/game';
+import { calculateWinner, type WinnerInfo } from '../utils/game';
 
-export type Player = 'cross' | 'zero';
-export type SquareType = Player | null;
+export type SquareType = 'cross' | 'zero' | null;
 
 export const usePlayGame = () => {
   const [board, setBoard] = useState(() => getFilledBoard());
   const [order, setOrder] = useState<SquareType>('cross');
-  const [winnerInfo, setWinnerInfo] = useState<CalculateWinnerPayload | null>(null);
+  const [winnerInfo, setWinnerInfo] = useState<WinnerInfo | null>(null);
 
   const resetGame = useCallback(() => {
     setBoard(() => getFilledBoard());

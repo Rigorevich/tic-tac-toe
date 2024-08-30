@@ -13,6 +13,10 @@
   justify-content: center;
 }
 
+.draw {
+  animation: blinkGrid 2s ease-in-out infinite;
+}
+
 .cross {
   &::before,
   &::after {
@@ -73,6 +77,18 @@
   &.winning::before {
     border-color: var(--winning-color);
     animation: bounceShape 0.5s infinite alternate;
+  }
+}
+
+@keyframes blinkGrid {
+  0% {
+    border-color: var(--dark-color);
+  }
+  50% {
+    border-color: var(--draw-color);
+  }
+  100% {
+    border-color: var(--dark-color);
   }
 }
 

@@ -1,13 +1,14 @@
-import { Player, SquareType } from '../hooks/usePlayGame';
+import { SquareType } from '../hooks/usePlayGame';
 
-export interface CalculateWinnerPayload {
-  winner: Player;
-  winningCombination: [number, number, number];
+export interface WinnerInfo {
+  winner: 'cross' | 'zero' | 'draw';
+  winningCombination: [number, number, number] | null;
 }
 
-export const calculateWinner = (
-  board: Record<string, SquareType>
-): CalculateWinnerPayload | null => {
+export const checkDraw = (board: Record<string, SquareType>): boolean =>
+  Object.values(board).every(Boolean);
+
+export const calculateWinner = (board: Record<string, SquareType>): WinnerInfo | null => {
   const winningCombinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -23,6 +24,10 @@ export const calculateWinner = (
     if (board[a] && board[a] === board[b] && board[a] === board[c]) {
       return { winner: board[a], winningCombination: [a, b, c] };
     }
+  }
+
+  if (checkDraw(board)) {
+    return { winner: 'draw', winningCombination: null };
   }
 
   return null;

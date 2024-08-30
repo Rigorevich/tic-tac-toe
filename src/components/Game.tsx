@@ -12,7 +12,7 @@ export const Game = () => {
       <Board
         board={board}
         handleClickSquare={handleClickSquare}
-        winningCombination={winnerInfo?.winningCombination}
+        winnerInfo={winnerInfo}
       />
       <Info
         order={order}

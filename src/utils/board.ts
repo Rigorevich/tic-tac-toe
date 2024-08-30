@@ -10,3 +10,14 @@ export const getFilledBoard = () => {
 
   return board;
 };
+
+export const isWinnerSquare = (
+  boardKey: string,
+  winningCombination?: [number, number, number] | null
+) => {
+  if (!winningCombination) {
+    return false;
+  }
+
+  return winningCombination.includes(Number(boardKey));
+};

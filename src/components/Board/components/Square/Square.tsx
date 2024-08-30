@@ -1,23 +1,28 @@
 import classNames from 'classnames';
 import { FC } from 'react';
 
-import { SquareType } from '../../../../hooks/usePlayGame';
+import { type SquareType } from '../../../../hooks/usePlayGame';
+import { isWinnerSquare } from '../../../../utils/board';
+import { type WinnerInfo } from '../../../../utils/game';
 
 import styles from './Square.module.scss';
 
 interface SquareProps {
-  winningCombination?: [number, number, number];
+  winnerInfo: WinnerInfo | null;
   boardKey: string;
   value: SquareType;
   onClick: VoidFunction;
 }
 
-export const Square: FC<SquareProps> = ({ winningCombination, boardKey, value, onClick }) => {
+export const Square: FC<SquareProps> = ({ winnerInfo, boardKey, value, onClick }) => {
+  const isWinner = isWinnerSquare(boardKey, winnerInfo?.winningCombination);
+
   const _className = classNames(styles.square, {
     [styles.cross]: value === 'cross',
     [styles.zero]: value === 'zero',
-    [styles.winning]: winningCombination && winningCombination.includes(Number(boardKey)),
-    [styles.dimmed]: winningCombination && !winningCombination.includes(Number(boardKey)),
+    [styles.draw]: winnerInfo?.winner === 'draw',
+    [styles.winning]: isWinner,
+    [styles.dimmed]: !isWinner,
   });
 
   return (
