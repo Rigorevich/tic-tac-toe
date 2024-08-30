@@ -1,23 +1,36 @@
 import { useCallback, useState } from 'react';
 
-import { defaultBoard } from '../constants/board';
-import { type Board } from '../utils/board';
-import { calculateWinner, type GameResult } from '../utils/game';
+import { getFilledBoard, type Board } from '../utils/board';
+import { calculateWinner, getFirstMoveSign, type GameResult } from '../utils/game';
 
+export type Player = 'cross' | 'zero';
 export type SquareType = 'cross' | 'zero' | null;
+
+export const defaultBoard = getFilledBoard();
 
 export const usePlayGame = () => {
   const [board, setBoard] = useState<Board>(defaultBoard);
-  const [history, setHistory] = useState<Board[]>([]);
+  const [moves, setMoves] = useState<Board[]>([]);
   const [order, setOrder] = useState<SquareType>('cross');
   const [gameResult, setGameResult] = useState<GameResult | null>(null);
 
   const resetGame = useCallback(() => {
+    const firstMove = getFirstMoveSign(moves);
+
     setBoard(defaultBoard);
-    setHistory([]);
+    setOrder(firstMove === 'cross' ? 'zero' : 'cross');
+    setMoves([]);
     setGameResult(null);
-    setOrder((prev) => (prev === 'cross' ? 'zero' : 'cross'));
-  }, []);
+  }, [moves]);
+
+  const handleJumpToMove = useCallback(
+    (index: number) => {
+      setBoard(moves[index]);
+      setMoves(moves.slice(0, index + 1));
+      setGameResult(null);
+    },
+    [moves]
+  );
 
   const handleClickSquare = useCallback(
     (key: string) => {
@@ -38,11 +51,11 @@ export const usePlayGame = () => {
         setOrder((prev) => (prev === 'cross' ? 'zero' : 'cross'));
       }
 
-      setHistory((prev) => [...prev, updatedBoard]);
+      setMoves((prev) => [...prev, updatedBoard]);
       setBoard(updatedBoard);
     },
     [board, gameResult, order, resetGame]
   );
 
-  return { board, order, history, gameResult, handleClickSquare };
+  return { board, order, moves, gameResult, handleClickSquare, handleJumpToMove };
 };

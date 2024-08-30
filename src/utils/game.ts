@@ -1,3 +1,4 @@
+import { Board } from './board';
 import { SquareType } from '../hooks/usePlayGame';
 
 export interface GameResult {
@@ -31,4 +32,16 @@ export const calculateWinner = (board: Record<string, SquareType>): GameResult |
   }
 
   return null;
+};
+
+export const getFirstMoveSign = (moves: Board[]) => {
+  if (moves.length === 0) {
+    return null;
+  }
+
+  const firstBoard = moves[0];
+
+  const firstMove = Object.values(firstBoard).find((value) => value !== null);
+
+  return firstMove || null;
 };
