@@ -1,26 +1,27 @@
 import { Board } from './Board/Board';
-import { Info } from './Info/Info';
+import { Message } from './Message/Message';
 import { Moves } from './Moves/Moves';
+import { Score } from './Score/Score';
 import { useTicTacToe } from '../hooks/useTicTacToe';
 
 import styles from './Game.module.scss';
 
 export const Game = () => {
-  const { board, moves, order, gameResult, handleJumpToMove, handleClickSquare } = useTicTacToe();
+  const { board, moves, player, gameResult, score, handleJumpToMove, handleClickSquare } =
+    useTicTacToe();
 
   return (
     <div className={styles.container}>
-      <div className={styles.boardWrapper}>
-        <Board
-          board={board}
-          handleClickSquare={handleClickSquare}
-          gameResult={gameResult}
-        />
-        <Info
-          order={order}
-          winner={gameResult?.winner}
-        />
-      </div>
+      <Message
+        player={player}
+        result={gameResult?.result}
+      />
+      <Board
+        board={board}
+        handleClickSquare={handleClickSquare}
+        gameResult={gameResult}
+      />
+      <Score score={score} />
       <Moves
         moves={moves}
         handleJumpToMove={handleJumpToMove}

@@ -8,19 +8,23 @@ import { type GameResult } from '../../../../utils/game';
 import styles from './Square.module.scss';
 
 interface SquareProps {
-  gameResult: GameResult | null;
+  winningCombinations?: GameResult['winningCombination'];
   boardKey: string;
   value: SquareType;
-  onClick: VoidFunction;
+  handleClickSquare: VoidFunction;
 }
 
-export const Square: FC<SquareProps> = ({ gameResult, boardKey, value, onClick }) => {
-  const isWinner = isWinnerSquare(boardKey, gameResult?.winningCombination);
+export const Square: FC<SquareProps> = ({
+  value,
+  boardKey,
+  winningCombinations,
+  handleClickSquare,
+}) => {
+  const isWinner = isWinnerSquare(boardKey, winningCombinations);
 
   const _className = classNames(styles.square, {
     [styles.cross]: value === 'cross',
     [styles.zero]: value === 'zero',
-    [styles.draw]: gameResult?.winner === 'draw',
     [styles.winning]: isWinner,
     [styles.dimmed]: !isWinner,
   });
@@ -28,7 +32,7 @@ export const Square: FC<SquareProps> = ({ gameResult, boardKey, value, onClick }
   return (
     <button
       className={_className}
-      onClick={onClick}
+      onClick={handleClickSquare}
     ></button>
   );
 };

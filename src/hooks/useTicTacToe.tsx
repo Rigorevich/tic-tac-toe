@@ -1,30 +1,40 @@
 import { useCallback, useState } from 'react';
 
 import { getFilledBoard, type BoardType } from '../utils/board';
-import { calculateWinner, getFirstMoveSign, getNextPlayer, type GameResult } from '../utils/game';
+import { calculateWinner, getNextPlayer, type GameResult } from '../utils/game';
 
+export type PlayerType = 'cross' | 'zero';
 export type SquareType = 'cross' | 'zero' | null;
+export type ScoreType = Record<'cross' | 'zero' | 'tie', number>;
+export type MoveType = {
+  board: BoardType;
+  player: PlayerType;
+};
 
 export const defaultBoard = getFilledBoard();
 
 export const useTicTacToe = () => {
   const [board, setBoard] = useState<BoardType>(defaultBoard);
-  const [moves, setMoves] = useState<BoardType[]>([]);
-  const [order, setOrder] = useState<SquareType>('cross');
+  const [moves, setMoves] = useState<MoveType[]>([]);
+  const [player, setPlayer] = useState<PlayerType>('cross');
   const [gameResult, setGameResult] = useState<GameResult | null>(null);
+  const [score, setScore] = useState<ScoreType>({ cross: 0, zero: 0, tie: 0 });
 
   const resetGame = useCallback(() => {
-    const firstMove = getFirstMoveSign(moves);
+    if (gameResult?.result) {
+      setScore((prev) => ({ ...prev, [gameResult.result]: prev[gameResult.result] + 1 }));
+    }
 
     setBoard(defaultBoard);
-    setOrder(firstMove === 'cross' ? 'zero' : 'cross');
+    setPlayer(moves[0].player === 'cross' ? 'zero' : 'cross');
     setMoves([]);
     setGameResult(null);
-  }, [moves]);
+  }, [moves, gameResult]);
 
   const handleJumpToMove = useCallback(
     (index: number) => {
-      setBoard(moves[index]);
+      setBoard(moves[index].board);
+      setPlayer(getNextPlayer(moves[index].player));
       setMoves(moves.slice(0, index + 1));
       setGameResult(null);
     },
@@ -35,24 +45,23 @@ export const useTicTacToe = () => {
     (key: string) => {
       if (gameResult || board[key]) {
         if (gameResult) resetGame();
-
         return;
       }
 
-      const updatedBoard = { ...board, [key]: order };
+      const updatedBoard = { ...board, [key]: player };
       const info = calculateWinner(updatedBoard);
 
       if (info) {
         setGameResult(info);
       } else {
-        setOrder(getNextPlayer(order));
+        setPlayer(getNextPlayer(player));
       }
 
-      setMoves((prev) => [...prev, updatedBoard]);
+      setMoves((prev) => [...prev, { board: updatedBoard, player: player }]);
       setBoard(updatedBoard);
     },
-    [board, gameResult, order, resetGame]
+    [board, gameResult, player, resetGame]
   );
 
-  return { board, order, moves, gameResult, handleClickSquare, handleJumpToMove };
+  return { board, player, moves, gameResult, score, handleClickSquare, handleJumpToMove };
 };

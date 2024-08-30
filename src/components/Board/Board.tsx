@@ -20,9 +20,9 @@ export const Board: FC<BoardProps> = ({ board, gameResult, handleClickSquare }) 
         <Square
           key={key}
           boardKey={key}
-          gameResult={gameResult}
+          winningCombinations={gameResult?.winningCombination}
           value={board[key]}
-          onClick={() => handleClickSquare(key)}
+          handleClickSquare={() => handleClickSquare(key)}
         />
       ))}
     </div>

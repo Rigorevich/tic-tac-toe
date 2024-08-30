@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
-import { type BoardType } from '../../utils/board';
+import { MoveType } from '../../hooks/useTicTacToe';
 
 import styles from './Moves.module.scss';
 
 interface MovesProps {
-  moves: BoardType[];
+  moves: MoveType[];
   handleJumpToMove: (index: number) => void;
 }
 

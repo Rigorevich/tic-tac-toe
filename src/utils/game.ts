@@ -1,12 +1,11 @@
-import { Board } from './board';
-import { SquareType } from '../hooks/useTicTacToe';
+import { type PlayerType, type SquareType } from '../hooks/useTicTacToe';
 
 export interface GameResult {
-  winner: 'cross' | 'zero' | 'draw';
+  result: 'cross' | 'zero' | 'tie';
   winningCombination: [number, number, number] | null;
 }
 
-export const checkDraw = (board: Record<string, SquareType>): boolean =>
+export const checkTie = (board: Record<string, SquareType>): boolean =>
   Object.values(board).every(Boolean);
 
 export const calculateWinner = (board: Record<string, SquareType>): GameResult | null => {
@@ -23,28 +22,16 @@ export const calculateWinner = (board: Record<string, SquareType>): GameResult |
 
   for (const [a, b, c] of winningCombinations) {
     if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      return { winner: board[a], winningCombination: [a, b, c] };
+      return { result: board[a], winningCombination: [a, b, c] };
     }
   }
 
-  if (checkDraw(board)) {
-    return { winner: 'draw', winningCombination: null };
+  if (checkTie(board)) {
+    return { result: 'tie', winningCombination: null };
   }
 
   return null;
 };
 
-export const getFirstMoveSign = (moves: Board[]) => {
-  if (moves.length === 0) {
-    return null;
-  }
-
-  const firstBoard = moves[0];
-
-  const firstMove = Object.values(firstBoard).find((value) => value !== null);
-
-  return firstMove || null;
-};
-
-export const getNextPlayer = (currentPlayer: SquareType): SquareType =>
+export const getNextPlayer = (currentPlayer: PlayerType): PlayerType =>
   currentPlayer === 'cross' ? 'zero' : 'cross';
