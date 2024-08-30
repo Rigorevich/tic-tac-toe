@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { FC, memo, useEffect, useState } from 'react';
 
-import { type SquareType } from '../../hooks/usePlayGame';
+import { type SquareType } from '../../hooks/useTicTacToe';
 import { type GameResult } from '../../utils/game';
 
 import styles from './Info.module.scss';

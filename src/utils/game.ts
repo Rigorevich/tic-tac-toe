@@ -1,5 +1,5 @@
 import { Board } from './board';
-import { SquareType } from '../hooks/usePlayGame';
+import { SquareType } from '../hooks/useTicTacToe';
 
 export interface GameResult {
   winner: 'cross' | 'zero' | 'draw';
@@ -45,3 +45,6 @@ export const getFirstMoveSign = (moves: Board[]) => {
 
   return firstMove || null;
 };
+
+export const getNextPlayer = (currentPlayer: SquareType): SquareType =>
+  currentPlayer === 'cross' ? 'zero' : 'cross';

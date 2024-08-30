@@ -1,12 +1,12 @@
 import { Board } from './Board/Board';
 import { Info } from './Info/Info';
 import { Moves } from './Moves/Moves';
-import { usePlayGame } from '../hooks/usePlayGame';
+import { useTicTacToe } from '../hooks/useTicTacToe';
 
 import styles from './Game.module.scss';
 
 export const Game = () => {
-  const { board, moves, order, gameResult, handleJumpToMove, handleClickSquare } = usePlayGame();
+  const { board, moves, order, gameResult, handleJumpToMove, handleClickSquare } = useTicTacToe();
 
   return (
     <div className={styles.container}>

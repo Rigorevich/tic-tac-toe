@@ -1,16 +1,15 @@
 import { useCallback, useState } from 'react';
 
-import { getFilledBoard, type Board } from '../utils/board';
-import { calculateWinner, getFirstMoveSign, type GameResult } from '../utils/game';
+import { getFilledBoard, type BoardType } from '../utils/board';
+import { calculateWinner, getFirstMoveSign, getNextPlayer, type GameResult } from '../utils/game';
 
-export type Player = 'cross' | 'zero';
 export type SquareType = 'cross' | 'zero' | null;
 
 export const defaultBoard = getFilledBoard();
 
-export const usePlayGame = () => {
-  const [board, setBoard] = useState<Board>(defaultBoard);
-  const [moves, setMoves] = useState<Board[]>([]);
+export const useTicTacToe = () => {
+  const [board, setBoard] = useState<BoardType>(defaultBoard);
+  const [moves, setMoves] = useState<BoardType[]>([]);
   const [order, setOrder] = useState<SquareType>('cross');
   const [gameResult, setGameResult] = useState<GameResult | null>(null);
 
@@ -34,12 +33,10 @@ export const usePlayGame = () => {
 
   const handleClickSquare = useCallback(
     (key: string) => {
-      if (!gameResult && board[key]) {
-        return;
-      }
+      if (gameResult || board[key]) {
+        if (gameResult) resetGame();
 
-      if (gameResult) {
-        return resetGame();
+        return;
       }
 
       const updatedBoard = { ...board, [key]: order };
@@ -48,7 +45,7 @@ export const usePlayGame = () => {
       if (info) {
         setGameResult(info);
       } else {
-        setOrder((prev) => (prev === 'cross' ? 'zero' : 'cross'));
+        setOrder(getNextPlayer(order));
       }
 
       setMoves((prev) => [...prev, updatedBoard]);

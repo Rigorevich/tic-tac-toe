@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { Square } from './components/Square/Square';
 
-import { type SquareType } from '../../hooks/usePlayGame';
+import { type SquareType } from '../../hooks/useTicTacToe';
 import { type GameResult } from '../../utils/game';
 
 import styles from './Board.module.scss';

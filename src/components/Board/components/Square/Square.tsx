@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { FC } from 'react';
 
-import { type SquareType } from '../../../../hooks/usePlayGame';
+import { type SquareType } from '../../../../hooks/useTicTacToe';
 import { isWinnerSquare } from '../../../../utils/board';
 import { type GameResult } from '../../../../utils/game';
 

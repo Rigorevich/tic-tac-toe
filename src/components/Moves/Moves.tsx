@@ -1,11 +1,11 @@
 import { FC } from 'react';
 
-import { type Board } from '../../utils/board';
+import { type BoardType } from '../../utils/board';
 
 import styles from './Moves.module.scss';
 
 interface MovesProps {
-  moves: Board[];
+  moves: BoardType[];
   handleJumpToMove: (index: number) => void;
 }
 
