@@ -3,3 +3,10 @@
   grid-template-columns: repeat(3, 170px);
   grid-template-rows: repeat(3, 170px);
 }
+
+@media (max-width: 600px) {
+  .board {
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+  }
+}

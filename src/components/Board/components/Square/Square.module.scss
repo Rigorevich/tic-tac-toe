@@ -96,3 +96,9 @@
     transform: scale(1.1) rotate(var(--rotate-angle));
   }
 }
+
+@media (max-width: 600px) {
+  .zero::before {
+    border-width: 10px;
+  }
+}
