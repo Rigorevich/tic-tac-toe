@@ -1,4 +1,4 @@
-import { type PlayerType, type SquareType } from '../hooks/useTicTacToe';
+import { type TurnType, type SquareType } from '../hooks/useTicTacToe';
 
 export interface GameResultType {
   result: 'cross' | 'zero' | 'tie';
@@ -33,5 +33,5 @@ export const calculateWinner = (board: Record<string, SquareType>): GameResultTy
   return null;
 };
 
-export const getNextPlayer = (currentPlayer: PlayerType): PlayerType =>
-  currentPlayer === 'cross' ? 'zero' : 'cross';
+export const getNextTurn = (currentTurn: TurnType): TurnType =>
+  currentTurn === 'cross' ? 'zero' : 'cross';

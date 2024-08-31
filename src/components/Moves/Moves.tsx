@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import { MoveType } from '../../hooks/useTicTacToe';
 
@@ -9,7 +9,7 @@ interface MovesProps {
   handleJumpToMove: (index: number) => void;
 }
 
-export const Moves: FC<MovesProps> = ({ moves, handleJumpToMove }) => {
+export const Moves: FC<MovesProps> = memo(({ moves, handleJumpToMove }) => {
   return (
     <div className={styles.moves}>
       {moves.map((_move, index) => (
@@ -18,9 +18,9 @@ export const Moves: FC<MovesProps> = ({ moves, handleJumpToMove }) => {
           className={styles.move}
           onClick={() => handleJumpToMove(index)}
         >
-          Move: {index}
+          Move: {index + 1}
         </button>
       ))}
     </div>
   );
-};
+});

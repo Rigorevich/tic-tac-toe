@@ -1,49 +1,52 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { getFilledBoard, type BoardType } from '../utils/board';
-import { calculateWinner, getNextPlayer, type GameResultType } from '../utils/game';
+import { calculateWinner, getNextTurn, type GameResultType } from '../utils/game';
 
-export type PlayerType = 'cross' | 'zero';
+export type TurnType = 'cross' | 'zero';
 export type SquareType = 'cross' | 'zero' | null;
 export type ScoreType = Record<'cross' | 'zero' | 'tie', number>;
-export type MoveType = {
-  board: BoardType;
-  player: PlayerType;
-};
+export type MoveType = { board: BoardType; turn: TurnType };
 
-export const defaultBoard = getFilledBoard();
+const defaultBoard = getFilledBoard();
+const defaultScore = { cross: 0, zero: 0, tie: 0 };
 
 export const useTicTacToe = () => {
   const [board, setBoard] = useState<BoardType>(defaultBoard);
+  const [score, setScore] = useState<ScoreType>(defaultScore);
   const [moves, setMoves] = useState<MoveType[]>([]);
-  const [startingPlayer, setStartingPlayer] = useState<PlayerType>('cross');
+  const [turn, setTurn] = useState<TurnType>('cross');
   const [gameResult, setGameResult] = useState<GameResultType | null>(null);
-  const [score, setScore] = useState<ScoreType>({ cross: 0, zero: 0, tie: 0 });
-
-  const currentPlayer = moves.length % 2 === 0 ? startingPlayer : getNextPlayer(startingPlayer);
+  const [currentMoveIndex, setCurrentMoveIndex] = useState<number | null>(null);
 
   const updateScore = useCallback(() => {
-    if (gameResult?.result) {
-      setScore((prevScore) => ({
-        ...prevScore,
-        [gameResult.result]: prevScore[gameResult.result] + 1,
+    if (gameResult) {
+      setScore((prev) => ({
+        ...prev,
+        [gameResult.result]: prev[gameResult.result] + 1,
       }));
     }
   }, [gameResult]);
 
   const resetGame = useCallback(() => {
+    const initialTurn = moves[0]?.turn || 'cross';
+
     updateScore();
-    setStartingPlayer((prev) => (prev === 'cross' ? 'zero' : 'cross'));
     setBoard(defaultBoard);
     setMoves([]);
+    setTurn(getNextTurn(initialTurn));
     setGameResult(null);
-  }, [updateScore]);
+    setCurrentMoveIndex(null);
+  }, [moves, updateScore]);
 
   const handleJumpToMove = useCallback(
     (index: number) => {
-      if (index !== moves.length - 1) {
-        setBoard(moves[index].board);
-        setMoves(moves.slice(0, index + 1));
+      const move = moves[index];
+
+      if (move) {
+        setBoard(move.board);
+        setTurn(getNextTurn(move.turn));
+        setCurrentMoveIndex(index);
         setGameResult(null);
       }
     },
@@ -52,23 +55,42 @@ export const useTicTacToe = () => {
 
   const handleClickSquare = useCallback(
     (key: string) => {
-      if (gameResult || board[key]) {
+      if (board[key] || gameResult) {
         if (gameResult) resetGame();
         return;
       }
 
-      const updatedBoard = { ...board, [key]: currentPlayer };
-      const info = calculateWinner(updatedBoard);
+      const updatedBoard = { ...board, [key]: turn };
+      const newMove: MoveType = { board: updatedBoard, turn: turn };
 
-      if (info) {
-        setGameResult(info);
-      }
+      setMoves((prev) =>
+        currentMoveIndex !== null
+          ? [...prev.slice(0, currentMoveIndex + 1), newMove]
+          : [...prev, newMove]
+      );
 
-      setMoves((prev) => [...prev, { board: updatedBoard, player: currentPlayer }]);
       setBoard(updatedBoard);
+      setTurn(getNextTurn(turn));
+      setCurrentMoveIndex(null);
     },
-    [board, gameResult, currentPlayer, resetGame]
+    [board, gameResult, turn, currentMoveIndex, resetGame]
   );
 
-  return { board, currentPlayer, moves, gameResult, score, handleClickSquare, handleJumpToMove };
+  useEffect(() => {
+    const result = calculateWinner(board);
+
+    if (result) {
+      setGameResult(result);
+    }
+  }, [board]);
+
+  return {
+    board,
+    turn,
+    moves,
+    gameResult,
+    score,
+    handleClickSquare,
+    handleJumpToMove,
+  };
 };

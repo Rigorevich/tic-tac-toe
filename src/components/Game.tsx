@@ -7,13 +7,13 @@ import { useTicTacToe } from '../hooks/useTicTacToe';
 import styles from './Game.module.scss';
 
 export const Game = () => {
-  const { board, moves, currentPlayer, gameResult, score, handleJumpToMove, handleClickSquare } =
+  const { board, moves, turn, gameResult, score, handleJumpToMove, handleClickSquare } =
     useTicTacToe();
 
   return (
     <div className={styles.container}>
       <Message
-        player={currentPlayer}
+        turn={turn}
         result={gameResult?.result}
       />
       <Board

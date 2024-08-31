@@ -1,17 +1,17 @@
 import { FC } from 'react';
 
-import { type PlayerType } from '../../hooks/useTicTacToe';
+import { type TurnType } from '../../hooks/useTicTacToe';
 import { type GameResultType } from '../../utils/game';
 import { getResultMessage, getTurnMessage } from '../../utils/message';
 
 import styles from './Message.module.scss';
 
 interface MessageProps {
-  player: PlayerType;
+  turn: TurnType;
   result?: GameResultType['result'];
 }
 
-export const Message: FC<MessageProps> = ({ player, result }) => {
+export const Message: FC<MessageProps> = ({ turn, result }) => {
   return (
     <div className={styles.message}>
       {result ? (
@@ -20,7 +20,7 @@ export const Message: FC<MessageProps> = ({ player, result }) => {
           <span className={styles.retry}>Press on the board to restart game</span>
         </div>
       ) : (
-        getTurnMessage(player)
+        getTurnMessage(turn)
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 import { BOARD_SIZE } from '../constants/board';
-import { SquareType } from '../hooks/useTicTacToe';
+import { type SquareType } from '../hooks/useTicTacToe';
 
 export type BoardType = Record<string, SquareType>;
 
