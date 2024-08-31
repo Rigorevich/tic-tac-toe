@@ -1,7 +1,9 @@
 .moves {
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 16px;
   height: 50px;
 
@@ -17,6 +19,15 @@
 
     &:hover {
       opacity: 0.9;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .moves {
+    .move {
+      padding: 4px 8px;
+      font-size: var(--font-size-sm);
     }
   }
 }

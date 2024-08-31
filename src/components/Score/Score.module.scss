@@ -19,3 +19,17 @@
     }
   }
 }
+
+@media (max-width: 600px) {
+  .wrapper {
+    .section {
+      .player {
+        font-size: var(--font-size-sm);
+      }
+
+      .score {
+        font-size: var(--font-size-md);
+      }
+    }
+  }
+}
