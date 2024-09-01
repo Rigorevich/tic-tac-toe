@@ -41,16 +41,17 @@ export const useTicTacToe = () => {
 
   const handleJumpToMove = useCallback(
     (index: number) => {
+      const isLastMove = index === moves.length - 1 && gameResult;
       const move = moves[index];
 
-      if (move) {
+      if (move && !isLastMove) {
         setBoard(move.board);
         setTurn(getNextTurn(move.turn));
         setCurrentMoveIndex(index);
         setGameResult(null);
       }
     },
-    [moves]
+    [moves, gameResult]
   );
 
   const handleClickSquare = useCallback(
